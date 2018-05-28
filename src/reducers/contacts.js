@@ -50,6 +50,13 @@ const initialState = [
 
 ];
 
-export default function contacts(state = initialState) {
+export default function contacts(state = initialState, action) {
+    if(action.type === 'ADD_CONTACT') {
+        return [
+            ...state,
+            action.payload
+        ];
+    }
+
     return state;
 }

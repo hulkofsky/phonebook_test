@@ -1,12 +1,27 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import { Grid, Header, Image, List, Input, Container, Card, Button } from 'semantic-ui-react'
+import { Grid, Header, Image, List, Input, Container, Card, Button, Modal } from 'semantic-ui-react'
 import './App.css';
+
+const doc = document;
 
 class App extends Component {
   
+  addContact() {
+    const newContact = {
+      name: doc.querySelector('input[placeholder=Name]').value,
+      phone: doc.querySelector('input[placeholder=Phone]').value,
+      company: doc.querySelector('input[placeholder=Company]').value,
+      email: doc.querySelector('input[placeholder=Email]').value,
+      photo: 'http://svgur.com/i/65U.svg'
+    };
+
+    console.log('hello')
+    this.props.onAddContact(newContact);
+  }
+
   findContact() {
-    const searchCriteria = document.querySelector('input[name=search]').value;
+    const searchCriteria = doc.querySelector('input[name=search]').value;
     this.props.onFindContact(searchCriteria);
   }
   
@@ -42,10 +57,10 @@ class App extends Component {
     return (
       <Grid>
         <Grid.Column width={6}>
-          <Input name='search' icon='search' iconPosition='left' placeholder='Search users...'
-            onChange={this.findContact.bind(this)} 
-          />
           <Header size='large'>Contacts:</Header>
+          <Input name='search' icon='search' iconPosition='left' placeholder='Search users...'
+            onChange={this.findContact.bind(this)}
+          />
           <List animated celled verticalAlign='middle'>
             {this.props.contacts.map((contact, index) => 
               <List.Item key={index} onClick={() => this.selectContact(this.props.contacts[index])}>
@@ -61,6 +76,29 @@ class App extends Component {
               </List.Item>
             )}
           </List>
+
+          <Modal trigger={<Button size='large' color='green'>Add</Button>}>
+              <Modal.Header>Add Contact</Modal.Header>
+              <Modal.Content>
+                <Grid>
+                  <Grid.Row>
+                    <Input placeholder='Name'/>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Input placeholder='Phone'/>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Input placeholder='Company'/>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Input placeholder='Email'/>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Button size='large' color='green' onClick={() => {this.addContact()}}>Add</Button>
+                  </Grid.Row>
+                </Grid>
+              </Modal.Content>
+            </Modal>
           </Grid.Column>
           <Grid.Column width={10}>
             <Header size='large'>Details:</Header>
@@ -78,6 +116,11 @@ export default connect(
     selectContact: state.selectContact
   }),
   dispatch => ({
+    onAddContact: (newContact) => {
+      console.log(newContact);
+      dispatch({type: 'ADD_CONTACT', payload: newContact});
+    },
+
     onFindContact: (searchCriteria) => {
       dispatch({ type: 'FIND_CONTACT', payload: searchCriteria })
     },
