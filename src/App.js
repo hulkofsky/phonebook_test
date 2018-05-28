@@ -8,13 +8,53 @@ const doc = document;
 class App extends Component {
   
   addContact() {
+    const name = doc.querySelector('input[placeholder=Name]').value;
+    const phone = doc.querySelector('input[placeholder=Phone]').value;
+    const company = doc.querySelector('input[placeholder=Company]').value;
+    const email = doc.querySelector('input[placeholder=Email]').value;
+
+    const emailPattern = /^\w+@\w+\.\w{2,4}$/i;
+    const phonePattern = /^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/;
+    const namePattern = /^[a-z]+([-_]?[a-z0-9]+){0,2}$/i;
+
+    const showError = (message) => {
+      let errorDiv = document.createElement('div');
+
+      if(doc.querySelector('.error')) doc.querySelector('.error').remove();
+      errorDiv.classList.add("error");
+      errorDiv.innerHTML = message;
+      doc.querySelector('button[name=addContact]').parentElement.appendChild(errorDiv);
+    };
+
+    if(name.search(namePattern))  {
+      showError('Invalid name!');
+      return;
+    };
+
+    if(phone.search(phonePattern))  {
+      showError('Invalid phone!');
+      return;
+    };
+
+    if(company.search(namePattern))  {
+      showError('Invalid company name!');
+      return;
+    };
+
+    if(email.search(emailPattern)) {
+      showError('Invalid email!');
+      return;
+    };
+
     const newContact = {
-      name: doc.querySelector('input[placeholder=Name]').value,
-      phone: doc.querySelector('input[placeholder=Phone]').value,
-      company: doc.querySelector('input[placeholder=Company]').value,
-      email: doc.querySelector('input[placeholder=Email]').value,
+      name: name,
+      phone: phone,
+      company: company,
+      email: email,
       photo: 'http://svgur.com/i/65U.svg'
     };
+
+    if(doc.querySelector('.error')) doc.querySelector('.error').remove();
 
     this.props.onAddContact(newContact);
   }
@@ -97,7 +137,7 @@ class App extends Component {
                     <Input placeholder='Email'/>
                   </Grid.Row>
                   <Grid.Row>
-                    <Button size='large' color='green' onClick={() => {this.addContact()}}>Add</Button>
+                    <Button name='addContact' size='large' color='green' onClick={() => {this.addContact()}}>Add</Button>
                   </Grid.Row>
                 </Grid>
               </Modal.Content>
