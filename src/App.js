@@ -16,8 +16,11 @@ class App extends Component {
       photo: 'http://svgur.com/i/65U.svg'
     };
 
-    console.log('hello')
     this.props.onAddContact(newContact);
+  }
+
+  deleteContact(index){
+    this.props.onDeleteContact(index);
   }
 
   findContact() {
@@ -71,7 +74,7 @@ class App extends Component {
                 </List.Content>
                 <Container className="right aligned">
                       <Button size='mini' color='yellow'>Change</Button>
-                      <Button size='mini' color='red'>Delete</Button>
+                      <Button size='mini' color='red' onClick={() => {this.deleteContact(index)}}>Delete</Button>
                 </Container>
               </List.Item>
             )}
@@ -117,8 +120,11 @@ export default connect(
   }),
   dispatch => ({
     onAddContact: (newContact) => {
-      console.log(newContact);
       dispatch({type: 'ADD_CONTACT', payload: newContact});
+    },
+
+    onDeleteContact: (index)  => {
+      dispatch({type: 'DELETE_CONTACT', payload: index});
     },
 
     onFindContact: (searchCriteria) => {

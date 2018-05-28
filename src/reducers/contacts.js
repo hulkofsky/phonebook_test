@@ -1,6 +1,6 @@
 const initialState = [
     {
-        id: 1,
+        id: 0,
         phone: "+1(111)111-11-11",
         name: "James Hatfield",
         company: "Metallica",
@@ -8,7 +8,7 @@ const initialState = [
         photo: "https://st.kp.yandex.net/images/actor_iphone/iphone360_483349.jpg"
     },
     {
-        id: 2,
+        id: 1,
         phone: "+2(222)111-11-11",
         name: "Kirk Hammet",
         company: "Metallica",
@@ -16,7 +16,7 @@ const initialState = [
         photo: "https://www.fulltone.com/sites/default/files/photos/artists/kirk-hammett.jpg"
     },
     {
-        id: 3,
+        id: 2,
         phone: "+3(333)111-11-11",
         name: "Corey Tailor",
         company: "Slipknot",
@@ -24,7 +24,7 @@ const initialState = [
         photo: "https://idolwiki.com/pics/CoreyTaylor/CoreyTaylor.jpg"
     },
     {
-        id: 4,
+        id: 3,
         phone: "+4(444)111-11-11",
         name: "Janis Joplin",
         company: "Singer",
@@ -32,7 +32,7 @@ const initialState = [
         photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Janis_Joplin_1970.JPG/267px-Janis_Joplin_1970.JPG"
     },
     {
-        id: 5,
+        id: 4,
         phone: "+5(555)111-11-11",
         name: "Kurt Cobain",
         company: "Nirvana",
@@ -40,7 +40,7 @@ const initialState = [
         photo: "http://www.abc.net.au/radionational/image/3841692-3x4-460x613.jpg"
     },
     {
-        id: 6,
+        id: 5,
         phone: "+6(666)111-11-11",
         name: "Jimmy Hendrix",
         company: "Guitarist",
@@ -56,6 +56,9 @@ export default function contacts(state = initialState, action) {
             ...state,
             action.payload
         ];
+    } else if (action.type === 'DELETE_CONTACT'){
+        state.splice(action.payload, 1);
+        return state;
     }
 
     return state;
